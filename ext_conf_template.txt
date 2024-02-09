@@ -1,0 +1,3 @@
+
+# cat=Value Maps; type=string; label=Comma-separated list of value maps that should be available
+enabledValueMaps = countryIso2ToShortName
