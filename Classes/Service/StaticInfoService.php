@@ -43,7 +43,7 @@ class StaticInfoService
     protected function getFieldsForTable(string $table): array
     {
         $fields = [];
-        foreach (static::MAPS as $config) {
+        foreach ($this->getAllMaps() as $config) {
             if ($config['table'] !== $table) {
                 continue;
             }
@@ -74,7 +74,7 @@ class StaticInfoService
      */
     public function getStaticInfoTableMap(string $name): array
     {
-        $config = static::MAPS[$name] ?? false;
+        $config = $this->getAllMaps()[$name] ?? false;
         if ($config === false) {
             return [];
         }
@@ -90,13 +90,27 @@ class StaticInfoService
     }
 
     /**
+     * @return array<string,<array{table:string,from:string,to:string}>
+     */
+    protected function getAllMaps(): array
+    {
+        // TODO dispatch event so that other sources can alter the maps
+        return static::MAPS;
+    }
+
+    public function getAllMapNames(): array
+    {
+        return array_keys($this->getAllMaps());
+    }
+
+    /**
      * @return array<string>
      */
     protected function getAllowedMapNames(): array
     {
         try {
             $config = $this->extensionConfiguration->get('dmf_static_info_tables');
-            $allowedMapsString = isset($config['enabledValueMaps']) ? (string)$config['enabledValueMaps'] : '';
+            $allowedMapsString = isset($config['enabledValueMaps']) ? trim((string)$config['enabledValueMaps']) : '';
             $allowedMaps = $allowedMapsString === '' ? [] : explode(',', $allowedMapsString);
 
             return array_map('trim', $allowedMaps);
@@ -110,7 +124,7 @@ class StaticInfoService
      */
     public function getAvailableMapNames(): array
     {
-        $maps = array_keys(static::MAPS);
+        $maps = $this->getAllMapNames();
         $allowedMaps = $this->getAllowedMapNames();
         if ($allowedMaps !== []) {
             $maps = array_intersect($maps, $allowedMaps);

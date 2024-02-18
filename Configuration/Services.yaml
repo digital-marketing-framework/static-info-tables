@@ -14,3 +14,9 @@ services:
         event: DigitalMarketingFramework\Typo3\Core\ConfigurationDocument\Storage\Event\StaticConfigurationDocumentIdentifierCollectionEvent
       - name: event.listener
         event: DigitalMarketingFramework\Typo3\Core\ConfigurationDocument\Storage\Event\StaticConfigurationDocumentLoadEvent
+
+  # registry updates
+  DigitalMarketingFramework\Typo3\StaticInfoTables\Registry\EventListener\CoreRegistryUpdateEventListener:
+    tags:
+      - name: event.listener
+        event: DigitalMarketingFramework\Typo3\Core\Registry\Event\CoreRegistryUpdateEvent
