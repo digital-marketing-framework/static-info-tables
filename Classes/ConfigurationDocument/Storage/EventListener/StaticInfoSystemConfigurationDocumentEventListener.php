@@ -4,9 +4,8 @@ namespace DigitalMarketingFramework\Typo3\StaticInfoTables\ConfigurationDocument
 
 use DigitalMarketingFramework\Core\Utility\ConfigurationUtility;
 use DigitalMarketingFramework\Typo3\Core\ConfigurationDocument\Storage\EventListener\AbstractSystemConfigurationDocumentEventListener;
-use DigitalMarketingFramework\Typo3\Core\Registry\Registry;
+use DigitalMarketingFramework\Typo3\Core\Registry\RegistryCollection;
 use DigitalMarketingFramework\Typo3\StaticInfoTables\Service\StaticInfoService;
-use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 
 class StaticInfoSystemConfigurationDocumentEventListener extends AbstractSystemConfigurationDocumentEventListener
 {
@@ -16,11 +15,10 @@ class StaticInfoSystemConfigurationDocumentEventListener extends AbstractSystemC
     public const MAP_NAME_ALL = 'all';
 
     public function __construct(
-        protected EventDispatcher $eventDispatcher,
-        Registry $registry,
+        RegistryCollection $registryCollection,
         protected StaticInfoService $staticInfoService,
     ) {
-        parent::__construct($eventDispatcher, $registry);
+        parent::__construct($registryCollection);
     }
 
     protected function getDocumentIdentifier(string $name): string
