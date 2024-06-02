@@ -7,10 +7,7 @@ services:
   DigitalMarketingFramework\Typo3\StaticInfoTables\:
     resource: '../Classes/*'
 
-  # static configuration document update
-  DigitalMarketingFramework\Typo3\StaticInfoTables\ConfigurationDocument\Storage\EventListener\StaticInfoSystemConfigurationDocumentEventListener:
+  DigitalMarketingFramework\Typo3\StaticInfoTables\Registry\EventListener\CoreRegistryUpdateEventListener:
     tags:
       - name: event.listener
-        event: DigitalMarketingFramework\Typo3\Core\ConfigurationDocument\Storage\Event\StaticConfigurationDocumentIdentifierCollectionEvent
-      - name: event.listener
-        event: DigitalMarketingFramework\Typo3\Core\ConfigurationDocument\Storage\Event\StaticConfigurationDocumentLoadEvent
+        event: DigitalMarketingFramework\Typo3\Core\Registry\Event\CoreRegistryUpdateEvent

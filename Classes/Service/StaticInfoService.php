@@ -137,13 +137,15 @@ class StaticInfoService
     }
 
     /**
-     * @return array{valueMaps:array<string,array{uuid:string,weight:int,key:string,value:array<string,array{uuid:string,weight:int,key:string,value:string}>}>}
+     * @return array{dataProcessing:array{valueMaps:array<string,array{uuid:string,weight:int,key:string,value:array<string,array{uuid:string,weight:int,key:string,value:string}>}>}}
      */
     public function getMapConfigurationDocument(?string $name = null): array
     {
         $names = $name === null ? $this->getAvailableMapNames() : [$name];
         $document = [
-            ConfigurationInterface::KEY_VALUE_MAPS => [],
+            ConfigurationInterface::KEY_DATA_PROCESSING => [
+                ConfigurationInterface::KEY_VALUE_MAPS => [],
+            ],
         ];
 
         $weight = MapUtility::WEIGHT_START;
@@ -154,7 +156,7 @@ class StaticInfoService
             }
 
             $id = ConfigurationUtility::generateUuidForPackage('static-info-tables', $mapName);
-            $document[ConfigurationInterface::KEY_VALUE_MAPS][$id] = MapUtility::createItem($map, $mapName, $weight, $id);
+            $document[ConfigurationInterface::KEY_DATA_PROCESSING][ConfigurationInterface::KEY_VALUE_MAPS][$id] = MapUtility::createItem($map, $mapName, $weight, $id);
             $weight += MapUtility::WEIGHT_DELTA;
         }
 
