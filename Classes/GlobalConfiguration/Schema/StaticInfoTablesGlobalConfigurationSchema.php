@@ -7,8 +7,14 @@ use DigitalMarketingFramework\Core\SchemaDocument\Schema\StringSchema;
 
 class StaticInfoTablesGlobalConfigurationSchema extends GlobalConfigurationSchema
 {
+    /**
+     * @var string
+     */
     public const KEY_ENABLED_VALUE_MAPS = 'enabledValueMaps';
 
+    /**
+     * @var string
+     */
     public const DEFAULT_ENABLED_VALUE_MAPS = 'countryIso2ToShortName';
 
     public function __construct()
