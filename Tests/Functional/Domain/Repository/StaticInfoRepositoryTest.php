@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace DigitalMarketingFramework\Typo3\StaticInfoTables\Tests\Functional\Domain\Repository;
 
 use DigitalMarketingFramework\Typo3\StaticInfoTables\Domain\Repository\StaticInfoRepository;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -17,7 +18,7 @@ class StaticInfoRepositoryTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->staticInfoRepository = GeneralUtility::makeInstance(StaticInfoRepository::class);
+        $this->staticInfoRepository = new StaticInfoRepository(GeneralUtility::makeInstance(ConnectionPool::class));
     }
 
     /**

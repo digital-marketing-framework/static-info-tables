@@ -4,10 +4,14 @@ namespace DigitalMarketingFramework\Typo3\StaticInfoTables\Domain\Repository;
 
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class StaticInfoRepository
 {
+    public function __construct(
+        protected ConnectionPool $connectionPool,
+    ) {
+    }
+
     /**
      * @param array<string> $fields
      * @param array<mixed|null> $whitelist
@@ -16,8 +20,7 @@ class StaticInfoRepository
      */
     public function findStaticInfo(string $table, array $fields, array $whitelist = [], ?string $orderBy = null): array
     {
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $queryBuilder = $connectionPool->getQueryBuilderForTable($table);
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
         $queryBuilder->select(...$fields)
             ->from($table)
             ->where($queryBuilder->expr()->eq('deleted', 0))
