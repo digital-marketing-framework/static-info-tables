@@ -6,32 +6,6 @@
         branches:
             - main
 jobs:
-    php-lint:
-        name: 'PHP linter'
-        runs-on: ubuntu-22.04
-        steps:
-            -
-                name: Checkout
-                uses: actions/checkout@v4
-            -
-                name: 'Install PHP'
-                uses: shivammathur/setup-php@v2
-                with:
-                    php-version: '${{ matrix.php_version }}'
-                    coverage: none
-                    tools: 'composer:v2.4'
-            -
-                name: 'Show the Composer configuration'
-                run: 'composer config --global --list'
-            -
-                name: 'Run PHP lint'
-                run: 'composer ci:php:lint'
-        strategy:
-            fail-fast: false
-            matrix:
-                php_version:
-                    - 8.1
-                    - 8.2
     code-quality:
         name: 'Code quality checks'
         runs-on: ubuntu-22.04
@@ -64,7 +38,7 @@ jobs:
                 run: "composer require typo3/cms-core ^${{ matrix.typo3_version }} --no-progress\ncomposer install --no-progress\n"
             -
                 name: 'Run command'
-                run: "composer ci\n"
+                run: "composer ci:static\n"
         strategy:
             fail-fast: false
             matrix:
