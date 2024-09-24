@@ -1,2 +1,6 @@
 .Build
 composer.lock
+.cache
+.ddev/*
+!/.ddev/config.yaml
+!/.ddev/php/
