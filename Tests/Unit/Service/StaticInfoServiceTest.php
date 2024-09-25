@@ -81,8 +81,8 @@ class StaticInfoServiceTest extends TestCase
             'cn_iso_2'
         )->willReturn(
             [
-                ['cn_iso_2' => 'US', 'cn_official_name_en' => 'United States'],
-                ['cn_iso_2' => 'CA', 'cn_official_name_en' => 'Canada'],
+                ['cn_iso_2' => 'USS', 'cn_official_name_en' => 'United States'],
+                ['cn_iso_2' => 'CAA', 'cn_official_name_en' => 'Canada'],
             ]
         );
         $result = $this->service->getStaticInfoTable('static_countries', 'cn_iso_2');

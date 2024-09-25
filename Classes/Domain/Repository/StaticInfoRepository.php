@@ -29,7 +29,7 @@ class StaticInfoRepository
             $queryBuilder->andWhere($queryBuilder->expr()->in($key, $queryBuilder->createNamedParameter($value, Connection::PARAM_STR_ARRAY)));
         }
 
-        if ($orderBy != null) {
+        if ($orderBy !== null) {
             $queryBuilder->orderBy($orderBy);
         }
 
