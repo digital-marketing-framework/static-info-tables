@@ -17,7 +17,7 @@ class StaticInfoSystemConfigurationDocumentDiscovery extends StaticSystemConfigu
 
     public function __construct(
         RegistryInterface $registry,
-        protected StaticInfoService $staticInfoService
+        protected StaticInfoService $staticInfoService,
     ) {
         parent::__construct($registry);
     }

@@ -11,6 +11,9 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException;
 
 class StaticInfoService
 {
@@ -34,6 +37,7 @@ class StaticInfoService
         protected StaticInfoRepository $repository,
         protected EventDispatcherInterface $eventDispatcher,
         protected ExtensionConfiguration $extensionConfiguration,
+        protected ConfigurationManager $configurationManager,
     ) {
     }
 
@@ -56,12 +60,32 @@ class StaticInfoService
     }
 
     /**
+     * @return array<string, array<int, string>>
+     *
+     * @throws InvalidConfigurationTypeException
+     */
+    protected function getWhitelistFromConfig(string $tableName): array
+    {
+        $result = [];
+        $config = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT)['plugin.']['tx_staticinfotables.']['settings.'];
+        if ($tableName === 'static_countries') {
+            $whitelist = explode(',', $config['countriesAllowed'] ?? '');
+            if ($whitelist !== ['']) {
+                $result['cn_iso_3'] = $whitelist;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
      * @return array<array<string,mixed>>
      */
     public function getStaticInfoTable(string $tableName, string $orderBy): array
     {
         $fields = $this->getFieldsForTable($tableName);
-        $table = $this->repository->findStaticInfo($tableName, $fields, $orderBy);
+        $whitelist = $this->getWhitelistFromConfig($tableName);
+        $table = $this->repository->findStaticInfo($tableName, $fields, $whitelist, $orderBy);
 
         $event = new StaticTableDataUpdateEvent($tableName, $table);
         $this->eventDispatcher->dispatch($event);
@@ -79,7 +103,7 @@ class StaticInfoService
             return [];
         }
 
-        $table = $this->getStaticInfoTable($config['table'], orderBy: $config['from']);
+        $table = $this->getStaticInfoTable($config['table'], $config['from']);
 
         $map = [];
         foreach ($table as $row) {

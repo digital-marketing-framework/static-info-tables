@@ -11,7 +11,7 @@ use DigitalMarketingFramework\Typo3\StaticInfoTables\Service\StaticInfoService;
 class StaticInfoTablesInitialization extends Initialization
 {
     public function __construct(
-        protected StaticInfoService $staticInfoService
+        protected StaticInfoService $staticInfoService,
     ) {
         parent::__construct(
             'static-info-tables',
